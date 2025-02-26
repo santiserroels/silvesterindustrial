@@ -29,7 +29,9 @@ const Home = ({ products, quantities, setQuantities }: HomeProps) => {
 
     useEffect(() => {
         if (searchValue !== '') {
-            const filteredProducts = products.filter(({ name }) => name.toLocaleLowerCase().includes(searchValue))
+            const filteredProducts = products.filter(({ name }) =>
+                name.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase())
+            )
             setFilteredProducts(filteredProducts)
         } else {
             setFilteredProducts(products)
