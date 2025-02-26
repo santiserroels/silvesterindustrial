@@ -1,0 +1,18 @@
+@import 'tailwindcss';
+
+@theme {
+    --color-primary: oklch(60.33% 0.2317 26.42);
+    --font-poppins: Poppins, sans-serif;
+}
+
+@layer base {
+    h1 {
+        font-size: var(--text-3xl);
+    }
+    h2 {
+        font-size: var(--text-2xl);
+    }
+    h3 {
+        font-size: var(--text-xl);
+    }
+}
