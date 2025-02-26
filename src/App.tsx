@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router'
 import { Cart, Checkout, Home } from './pages'
 import axios from 'axios'
-import { formatMoney, hashData, priceToNumber } from './utils'
+import { formatMoney, getImageId, hashData, priceToNumber } from './utils'
 import { PRODUCTS_API_URL } from './constants'
 import Layout from './layout'
 
@@ -17,10 +17,15 @@ const App = () => {
         const filteredResponse = response.values.filter((element) => element.length > 5)
 
         const products = filteredResponse.reduce((accum, current) => {
-            const product = current.filter(Boolean)
+            const product = current.filter((element) => element !== '')
+
+            if (!product.at(-1)?.includes('$')) {
+                product.pop()
+            }
 
             if (product.length === 2) {
                 accum.push({
+                    image_id: null,
                     sku: '',
                     name: product[0],
                     price: product[1],
@@ -30,11 +35,24 @@ const App = () => {
                 return accum
             }
 
+            if (product.length === 3) {
+                accum.push({
+                    image_id: null,
+                    sku: product[0],
+                    name: product[1],
+                    price: product[2],
+                    hash: hashData(product[1]),
+                })
+
+                return accum
+            }
+
             accum.push({
-                sku: product[0],
-                name: product[1],
-                price: product[2],
-                hash: hashData(product[1]),
+                image_id: getImageId(product[0]),
+                sku: product[1],
+                name: product[2],
+                price: product[3],
+                hash: hashData(product[2]),
             })
 
             return accum

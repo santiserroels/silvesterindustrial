@@ -1,4 +1,7 @@
+import clsx from 'clsx'
+import { ClassValue } from 'clsx'
 import { xxHash32 } from 'js-xxhash'
+import { twMerge } from 'tailwind-merge'
 
 const hashData = (text: string) => {
     return xxHash32(text).toString(16).padStart(8, '0')
@@ -16,4 +19,8 @@ const formatMoney = (amount: number) => {
 
 const priceToNumber = (price: string) => Number(price.replace(/[^0-9.-]+/g, ''))
 
-export { hashData, formatMoney, priceToNumber }
+const cn = (...input: Array<ClassValue>) => twMerge(clsx(input))
+
+const getImageId = (url: string) => url.split('/d/')[1].split('/')[0]
+
+export { hashData, formatMoney, priceToNumber, cn, getImageId }
