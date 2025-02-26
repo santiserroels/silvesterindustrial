@@ -107,7 +107,7 @@ const App = () => {
                         element={<Home products={products} quantities={quantities} setQuantities={setQuantities} />}
                     />
                     <Route path="cart" element={<Cart cart={cart} />} />
-                    <Route path="checkout" element={<Checkout cart={cart} />} />
+                    <Route path="checkout" element={<Checkout cart={cart} total={total} />} />
                 </Route>
             </Routes>
         </BrowserRouter>

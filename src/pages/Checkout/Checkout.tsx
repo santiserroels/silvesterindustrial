@@ -16,6 +16,7 @@ interface CheckoutFormValues {
 
 type CheckoutProps = {
     cart: Cart[]
+    total: string
 }
 
 const CheckoutValidationSchema: yup.Schema<CheckoutFormValues> = yup.object({
@@ -27,17 +28,17 @@ const CheckoutValidationSchema: yup.Schema<CheckoutFormValues> = yup.object({
     phone: yup.string().required('Campo requerido'),
 })
 
-const Checkout = ({ cart }: CheckoutProps) => {
+const Checkout = ({ cart, total }: CheckoutProps) => {
     const navigate = useNavigate()
     const purchaseItems = useMemo(() => cart.map(({ name, quantity }) => `${name} x${quantity}`), [cart])
 
     const formik = useFormik<CheckoutFormValues>({
         onSubmit: (values) => {
-            const message = `Pedido:\n${purchaseItems.join(', ')}\n\nCliente:\n${values.first_name} ${
-                values.last_name
-            }\nDNI: ${values.id}\nDomicilio: ${values.address}\nPara: ${values.shipping_type}\nTelefono: ${
-                values.phone
-            }`
+            const message = `Pedido:\n${purchaseItems.join('\n')}\n\nTotal: ${total}\n\nCliente:\n${
+                values.first_name
+            } ${values.last_name}\nDNI: ${values.id}\nDomicilio: ${values.address}\nPara: ${
+                values.shipping_type
+            }\nTelefono: ${values.phone}`
             window.open(
                 `https://wa.me/${import.meta.env.VITE_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`,
                 '_blank'

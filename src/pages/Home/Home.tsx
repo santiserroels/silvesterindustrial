@@ -33,8 +33,8 @@ const Home = ({ products, quantities, setQuantities }: HomeProps) => {
             {products.map(({ sku, name, price, hash }) => {
                 return (
                     <div key={hash} className="shadow-md border-[1px] border-gray-100 p-4 rounded-lg">
-                        <p>{sku}</p>
-                        <p className="truncate">{name}</p>
+                        <p className="text-primary text-xs">{sku}</p>
+                        <p className="line-clamp-2 h-[48px]">{name}</p>
                         <p>{price}</p>
                         <div className={`flex justify-center items-center gap-2 ${sku === '' ? 'mt-[1.5rem]' : null}`}>
                             <Button type="button" onClick={() => dismQuantity(hash)}>
