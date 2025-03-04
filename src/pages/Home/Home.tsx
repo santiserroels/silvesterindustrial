@@ -13,17 +13,13 @@ const Home = ({ products, quantities, setQuantities }: HomeProps) => {
     const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
     const [searchValue, setSearchValue] = useState('')
 
-    const addQuantity = (hash: string) => {
-        return setQuantities((prevState) => ({ ...prevState, [hash]: prevState[hash] + 1 }))
-    }
-
-    const dismQuantity = (hash: string) => {
+    const setQuantity = (hash: string, quantity: number) => {
         return setQuantities((prevState) => {
-            if (prevState[hash] === 0) {
+            if (quantity < 0) {
                 return prevState
             }
 
-            return { ...prevState, [hash]: prevState[hash] - 1 }
+            return { ...prevState, [hash]: quantity }
         })
     }
 
@@ -67,11 +63,16 @@ const Home = ({ products, quantities, setQuantities }: HomeProps) => {
                             <div
                                 className={`flex justify-center items-center gap-2 ${sku === '' ? 'mt-[1rem]' : null}`}
                             >
-                                <Button type="button" onClick={() => dismQuantity(hash)}>
+                                <Button type="button" onClick={() => setQuantity(hash, quantities[hash] - 1)}>
                                     <MinusIcon className="size-4" />
                                 </Button>
-                                <p>{quantities[hash]}</p>
-                                <Button type="button" onClick={() => addQuantity(hash)}>
+                                <input
+                                    value={quantities[hash]}
+                                    type="number"
+                                    className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-[4.5rem] text-center focus-visible:outline-0 inset-shadow-sm rounded-lg p-1 border-[1px] border-gray-200"
+                                    onChange={(e) => setQuantity(hash, Number(e.target.value))}
+                                />
+                                <Button type="button" onClick={() => setQuantity(hash, quantities[hash] + 1)}>
                                     <PlusIcon className="size-4" />
                                 </Button>
                             </div>
