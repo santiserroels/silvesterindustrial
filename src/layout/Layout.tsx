@@ -47,7 +47,15 @@ const Layout = ({ total, children }: PropsWithChildren<LayoutProps>) => {
     return (
         <main className="flex justify-center flex-col h-screen font-poppins">
             <Header />
-            <section className="lg:px-10 p-4 flex-1 max-h-full overflow-y-auto">{children}</section>
+            <section className="lg:px-10 p-4 flex-1 max-h-full overflow-y-auto">
+                <div className="p-2 text-center border-primary mb-4 border-double border-4">
+                    <p>
+                        <strong>ATENCIÓN CLIENTES:</strong> LOS PRECIOS PUBLICADOS ESTÁN SUJETOS A MODIFICACIONES.
+                        RECIÉN AL MOMENTO DE ABONAR SU COMPRA, SE CONGELAN LOS PRECIOS. GRACIAS.
+                    </p>
+                </div>
+                {children}
+            </section>
             {Footer ? (
                 <footer className="sticky bottom-0 bg-white w-full p-2 shadow-[4px_-6px_6px_-1px_rgba(0,0,0,0.1)] lg:px-10 px-4">
                     {Footer}
