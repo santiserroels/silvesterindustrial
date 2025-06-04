@@ -4,4 +4,5 @@ type Product = {
     name: string
     price: string
     hash: string
+    stock: boolean
 }

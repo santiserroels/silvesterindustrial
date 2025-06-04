@@ -19,40 +19,13 @@ const App = () => {
         const products = filteredResponse.reduce((accum, current) => {
             const product = current.filter((element) => element !== '')
 
-            if (!product.at(-1)?.includes('$')) {
-                product.pop()
-            }
-
-            if (product.length === 2) {
-                accum.push({
-                    image_id: null,
-                    sku: '',
-                    name: product[0],
-                    price: product[1],
-                    hash: hashData(product[0]),
-                })
-
-                return accum
-            }
-
-            if (product.length === 3) {
-                accum.push({
-                    image_id: null,
-                    sku: product[0],
-                    name: product[1],
-                    price: product[2],
-                    hash: hashData(product[1]),
-                })
-
-                return accum
-            }
-
             accum.push({
                 image_id: getImageId(product[0]),
                 sku: product[1],
                 name: product[2],
                 price: product[3],
                 hash: hashData(product[2]),
+                stock: product[4] === 'TRUE',
             })
 
             return accum
