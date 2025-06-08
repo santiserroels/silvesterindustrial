@@ -14,18 +14,18 @@ const App = () => {
     const getProducts = useCallback(async () => {
         const response: FileResponse = await axios.get(PRODUCTS_API_URL).then((res) => res.data)
 
-        const filteredResponse = response.values.filter((element) => element.length > 5)
+        response.values.shift()
 
-        const products = filteredResponse.reduce((accum, current) => {
-            const product = current.filter((element) => element !== '')
-
+        const products = response.values.reduce((accum, current) => {
             accum.push({
-                image_id: getImageId(product[0]),
-                sku: product[1],
-                name: product[2],
-                price: product[3],
-                hash: hashData(product[2]),
-                stock: product[4] === 'TRUE',
+                image_id: current[0] ? getImageId(current[0]) : null,
+                sku: current[1],
+                name: current[2],
+                description: current[3],
+                price: current[4],
+                hash: hashData(current[2]),
+                stock: current[5] === 'TRUE',
+                category: current[6],
             })
 
             return accum

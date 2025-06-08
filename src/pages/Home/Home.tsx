@@ -43,7 +43,7 @@ const Home = ({ products, quantities, setQuantities }: HomeProps) => {
         <Fragment>
             <SearchBar value={searchValue} setValue={setSearchValue} className="mb-2" />
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                {filteredProducts.map(({ sku, name, price, hash, image_id, stock }) => {
+                {filteredProducts.map(({ sku, name, price, hash, image_id, stock, description }) => {
                     return (
                         <div
                             key={hash}
@@ -67,8 +67,11 @@ const Home = ({ products, quantities, setQuantities }: HomeProps) => {
                             <p className="text-primary text-xs">{sku}</p>
                             <p className="line-clamp-2 h-[48px]">{name}</p>
                             <p>{price}</p>
+                            <p className="text-gray-400 text-xs line-clamp-2 h-[34px] mb-1">{description}</p>
                             <div
-                                className={`flex justify-center items-center gap-2 ${sku === '' ? 'mt-[1rem]' : null}`}
+                                className={`flex justify-center items-center gap-2 ${
+                                    sku === '' ? 'mt-[1.25rem]' : null
+                                }`}
                             >
                                 <Button
                                     type="button"
