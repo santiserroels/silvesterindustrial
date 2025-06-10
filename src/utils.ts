@@ -21,6 +21,6 @@ const priceToNumber = (price: string) => Number(price.replace(/[^0-9.-]+/g, ''))
 
 const cn = (...input: Array<ClassValue>) => twMerge(clsx(input))
 
-const getImageId = (url: string) => url.split('/d/')[1].split('/')[0]
+const getImageId = (url: string) => url.split('/d/').at(1)?.split('/').at(0) || null
 
 export { hashData, formatMoney, priceToNumber, cn, getImageId }

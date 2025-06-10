@@ -18,7 +18,7 @@ const App = () => {
 
         const products = response.values.reduce((accum, current) => {
             accum.push({
-                image_id: current[0] ? getImageId(current[0]) : null,
+                image_id: getImageId(current[0]),
                 sku: current[1],
                 name: current[2],
                 description: current[3],
