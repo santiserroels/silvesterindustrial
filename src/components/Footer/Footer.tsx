@@ -17,7 +17,7 @@ const Footer = memo(() => (
                     <EnvelopeIcon className="size-4 text-primary" />
                     <a href="mailto:ventas@silvesterindustrial.com">ventas@silvesterindustrial.com</a>
                 </p>
-                <a href="https://maps.app.goo.gl/kwM3ZYQuPW89qoWB7" target="_blank" className="flex items-center gap-2">
+                <a href="https://maps.app.goo.gl/VKY6dQmUguXNui3BA" target="_blank" className="flex items-center gap-2">
                     <MapPinIcon className="size-4 text-primary" />
                     Casilda 978, Rosario, Santa Fe
                 </a>
