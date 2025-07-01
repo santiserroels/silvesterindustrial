@@ -1,8 +1,8 @@
 import 'react'
-import { MinusIcon, PhotoIcon, PlusIcon } from '@heroicons/react/24/solid'
-import { Dispatch, Fragment, SetStateAction, useEffect, useState } from 'react'
-import { Button, SearchBar } from '../../components'
-import { cn } from '../../utils'
+import { Dispatch, Fragment, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react'
+import { SearchBar } from '../../components'
+import { useSearchParams } from 'react-router'
+import { CategoryFilter, Product } from './components'
 
 type HomeProps = {
     products: Product[]
@@ -11,29 +11,61 @@ type HomeProps = {
 }
 
 const Home = ({ products, quantities, setQuantities }: HomeProps) => {
+    const [searchParams] = useSearchParams()
     const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
     const [searchValue, setSearchValue] = useState('')
 
-    const setQuantity = (hash: string, quantity: number) => {
-        return setQuantities((prevState) => {
-            if (quantity < 0) {
-                return prevState
-            }
+    const setQuantity = useCallback(
+        (hash: string, quantity: number) => {
+            return setQuantities((prevState) => {
+                if (quantity < 0) {
+                    return prevState
+                }
 
-            return { ...prevState, [hash]: quantity }
-        })
-    }
+                return { ...prevState, [hash]: quantity }
+            })
+        },
+        [setQuantities]
+    )
+
+    const categories = useMemo(
+        () =>
+            products.reduce((accum, current) => {
+                const categoryIndex = accum.findIndex((category) => category === current.category)
+
+                if (categoryIndex === -1) {
+                    accum.push(current.category)
+                }
+
+                return accum
+            }, [] as string[]),
+        [products]
+    )
 
     useEffect(() => {
+        if (searchValue !== '' && searchParams.get('category')) {
+            const filteredProducts = products.filter(
+                ({ name, category }) =>
+                    name.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase()) &&
+                    category === searchParams.get('category')
+            )
+            return setFilteredProducts(filteredProducts)
+        }
+
         if (searchValue !== '') {
             const filteredProducts = products.filter(({ name }) =>
                 name.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase())
             )
-            setFilteredProducts(filteredProducts)
-        } else {
-            setFilteredProducts(products)
+            return setFilteredProducts(filteredProducts)
         }
-    }, [searchValue, products])
+
+        if (searchParams.get('category')) {
+            const filteredProducts = products.filter(({ category }) => category === searchParams.get('category'))
+            return setFilteredProducts(filteredProducts)
+        }
+
+        setFilteredProducts(products)
+    }, [searchValue, products, searchParams])
 
     if (products.length === 0) {
         return null
@@ -42,66 +74,16 @@ const Home = ({ products, quantities, setQuantities }: HomeProps) => {
     return (
         <Fragment>
             <SearchBar value={searchValue} setValue={setSearchValue} className="mb-2" />
+            <CategoryFilter categories={categories} containerClassName="my-4" />
+            {searchParams.get('category') && (
+                <div className="flex items-center w-full my-4">
+                    <h2 className="border-b-2 border-primary">{searchParams.get('category')}</h2>
+                </div>
+            )}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                {filteredProducts.map(({ sku, name, price, hash, image_id, stock, description }) => {
-                    return (
-                        <div
-                            key={hash}
-                            className={cn(
-                                'shadow-md border-[1px] border-gray-100 p-4 rounded-lg',
-                                !stock && 'pointer-events-none grayscale-100 opacity-50'
-                            )}
-                        >
-                            {image_id ? (
-                                <img
-                                    src={`https://drive.google.com/thumbnail?id=${image_id}&sz=w300`}
-                                    width="100%"
-                                    className="h-[100px] object-contain mb-4"
-                                    referrerPolicy="no-referrer"
-                                />
-                            ) : (
-                                <div className="flex justify-center items-center h-[100px] mb-4">
-                                    <PhotoIcon className="size-10 text-gray-400" />
-                                </div>
-                            )}
-                            <p className="text-primary text-xs">{sku}</p>
-                            <p className="line-clamp-2 h-[48px]">{name}</p>
-                            <p>{price}</p>
-                            <p className="text-gray-400 text-xs line-clamp-2 h-[34px] mb-1">{description}</p>
-                            <div
-                                className={`flex justify-center items-center gap-2 ${
-                                    sku === '' ? 'mt-[1.25rem]' : null
-                                }`}
-                            >
-                                <Button
-                                    type="button"
-                                    onClick={() => setQuantity(hash, quantities[hash] - 1)}
-                                    disabled={!stock}
-                                >
-                                    <MinusIcon className="size-4" />
-                                </Button>
-                                <input
-                                    value={quantities[hash]}
-                                    type="number"
-                                    className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-[4.5rem] text-center focus-visible:outline-0 inset-shadow-sm rounded-lg p-1 border-[1px] border-gray-200"
-                                    onChange={(e) => {
-                                        if (stock) {
-                                            setQuantity(hash, Number(e.target.value))
-                                        }
-                                    }}
-                                    disabled={!stock}
-                                />
-                                <Button
-                                    type="button"
-                                    onClick={() => setQuantity(hash, quantities[hash] + 1)}
-                                    disabled={!stock}
-                                >
-                                    <PlusIcon className="size-4" />
-                                </Button>
-                            </div>
-                        </div>
-                    )
-                })}
+                {filteredProducts.map((product) => (
+                    <Product product={product} quantities={quantities} setQuantity={setQuantity} key={product.hash} />
+                ))}
                 {filteredProducts.length === 0 && <p className="mt-4">No se encontraron resultados...</p>}
             </div>
         </Fragment>

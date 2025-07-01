@@ -2,6 +2,7 @@ import 'react'
 import { formatMoney } from '../../utils'
 import { useNavigate } from 'react-router'
 import { useEffect } from 'react'
+import { Button } from '../../components'
 
 type CartProps = {
     cart: Cart[]
@@ -28,6 +29,9 @@ const Cart = ({ cart }: CartProps) => {
                         <p>{formatMoney(product.subtotal)}</p>
                     </div>
                 ))}
+                <Button type="button" className="w-full" onClick={() => navigate('/checkout')}>
+                    Finalizar Pedido
+                </Button>
             </div>
         </div>
     )
