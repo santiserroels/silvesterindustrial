@@ -15,6 +15,8 @@ const Layout = ({ total, children }: PropsWithChildren<LayoutProps>) => {
                     <p>
                         <strong>ATENCIÓN CLIENTES:</strong> LOS PRECIOS PUBLICADOS ESTÁN SUJETOS A MODIFICACIONES.
                         RECIÉN AL MOMENTO DE ABONAR SU COMPRA, SE CONGELAN LOS PRECIOS. GRACIAS.
+                        <br></br>
+                        <strong>PRECIOS SIN IVA</strong>
                     </p>
                 </div>
                 {children}
