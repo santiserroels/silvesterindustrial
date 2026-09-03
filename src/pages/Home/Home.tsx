@@ -1,32 +1,15 @@
 import 'react'
-import { Dispatch, Fragment, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react'
-import { SearchBar } from '../../components'
+import { Fragment, useEffect, useMemo, useState } from 'react'
+import { Loader, SearchBar } from '../../components'
 import { useSearchParams } from 'react-router'
 import { CategoryFilter, Product } from './components'
+import { useCart } from '../../context'
 
-type HomeProps = {
-    products: Product[]
-    quantities: Record<string, number>
-    setQuantities: Dispatch<SetStateAction<Record<string, number>>>
-}
-
-const Home = ({ products, quantities, setQuantities }: HomeProps) => {
+const Home = () => {
+    const { products, isLoading } = useCart()
     const [searchParams] = useSearchParams()
     const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
     const [searchValue, setSearchValue] = useState('')
-
-    const setQuantity = useCallback(
-        (hash: string, quantity: number) => {
-            return setQuantities((prevState) => {
-                if (quantity < 0) {
-                    return prevState
-                }
-
-                return { ...prevState, [hash]: quantity }
-            })
-        },
-        [setQuantities]
-    )
 
     const categories = useMemo(
         () =>
@@ -67,8 +50,8 @@ const Home = ({ products, quantities, setQuantities }: HomeProps) => {
         setFilteredProducts(products)
     }, [searchValue, products, searchParams])
 
-    if (products.length === 0) {
-        return null
+    if (isLoading) {
+        return <Loader />
     }
 
     return (
@@ -82,7 +65,7 @@ const Home = ({ products, quantities, setQuantities }: HomeProps) => {
             )}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                 {filteredProducts.map((product) => (
-                    <Product product={product} quantities={quantities} setQuantity={setQuantity} key={product.hash} />
+                    <Product product={product} key={product.hash} />
                 ))}
                 {filteredProducts.length === 0 && <p className="mt-4">No se encontraron resultados...</p>}
             </div>

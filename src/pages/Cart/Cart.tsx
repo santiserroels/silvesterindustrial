@@ -2,12 +2,10 @@ import 'react'
 import { formatMoney } from '../../utils'
 import { useNavigate } from 'react-router'
 import { useEffect } from 'react'
+import { useCart } from '../../context'
 
-type CartProps = {
-    cart: Cart[]
-}
-
-const Cart = ({ cart }: CartProps) => {
+const Cart = () => {
+    const { cart } = useCart()
     const navigate = useNavigate()
 
     useEffect(() => {

@@ -4,6 +4,7 @@ import { Button, TextInputField } from '../../components'
 import * as yup from 'yup'
 import { useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router'
+import { useCart } from '../../context'
 
 interface CheckoutFormValues {
     first_name: string
@@ -11,11 +12,6 @@ interface CheckoutFormValues {
     id: string
     address: string
     phone: string
-}
-
-type CheckoutProps = {
-    cart: Cart[]
-    total: string
 }
 
 const CheckoutValidationSchema: yup.Schema<CheckoutFormValues> = yup.object({
@@ -26,7 +22,8 @@ const CheckoutValidationSchema: yup.Schema<CheckoutFormValues> = yup.object({
     phone: yup.string().required('Campo requerido'),
 })
 
-const Checkout = ({ cart, total }: CheckoutProps) => {
+const Checkout = () => {
+    const { cart, total } = useCart()
     const navigate = useNavigate()
     const purchaseItems = useMemo(() => cart.map(({ name, quantity }) => `${name} x${quantity}`), [cart])
 

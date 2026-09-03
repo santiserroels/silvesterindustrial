@@ -1,14 +1,14 @@
 import { cn } from '../../../../utils'
 import { MinusIcon, PhotoIcon, PlusIcon } from '@heroicons/react/24/solid'
 import { Button } from '../../../../components'
+import { useCart } from '../../../../context'
 
 interface ProductProps {
     product: Product
-    quantities: Record<string, number>
-    setQuantity: (hash: string, quantity: number) => void
 }
 
-const Product = ({ product, quantities, setQuantity }: ProductProps) => {
+const Product = ({ product }: ProductProps) => {
+    const { quantities, setQuantity } = useCart()
     const { sku, name, price, hash, image_id, stock, description, category } = product
 
     return (

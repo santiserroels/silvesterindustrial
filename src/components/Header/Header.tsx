@@ -2,12 +2,10 @@ import 'react'
 import logo from '../../assets/logo.webp'
 import { NavLink, useLocation, useNavigate } from 'react-router'
 import Button from '../Button'
+import { useCart } from '../../context'
 
-interface HeaderProps {
-    total: string
-}
-
-const Header = ({ total }: HeaderProps) => {
+const Header = () => {
+    const { total } = useCart()
     const { pathname } = useLocation()
     const navigate = useNavigate()
 

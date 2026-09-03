@@ -2,14 +2,10 @@ import 'react'
 import { Header, Footer } from '../components'
 import { PropsWithChildren } from 'react'
 
-type LayoutProps = {
-    total: string
-}
-
-const Layout = ({ total, children }: PropsWithChildren<LayoutProps>) => {
+const Layout = ({ children }: PropsWithChildren) => {
     return (
         <main className="flex justify-center flex-col h-screen font-poppins">
-            <Header total={total} />
+            <Header />
             <section className="lg:px-10 p-4 flex-1 max-h-full overflow-y-auto">
                 <div className="p-2 text-center border-primary mb-4 border-double border-4">
                     <p>
