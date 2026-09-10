@@ -25,7 +25,10 @@ const CheckoutValidationSchema: yup.Schema<CheckoutFormValues> = yup.object({
 const Checkout = () => {
     const { cart, total } = useCart()
     const navigate = useNavigate()
-    const purchaseItems = useMemo(() => cart.map(({ name, quantity }) => `${name} x${quantity}`), [cart])
+    const purchaseItems = useMemo(
+        () => cart.map(({ name, quantity, price }) => `${name} x${quantity} - $${price * quantity}`),
+        [cart]
+    )
 
     const formik = useFormik<CheckoutFormValues>({
         onSubmit: (values) => {
