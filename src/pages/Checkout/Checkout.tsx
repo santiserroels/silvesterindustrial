@@ -5,6 +5,7 @@ import * as yup from 'yup'
 import { useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router'
 import { useCart } from '../../context'
+import { formatMoney } from '../../utils'
 
 interface CheckoutFormValues {
     first_name: string
@@ -26,7 +27,7 @@ const Checkout = () => {
     const { cart, total } = useCart()
     const navigate = useNavigate()
     const purchaseItems = useMemo(
-        () => cart.map(({ name, quantity, price }) => `${name} x${quantity} - $${price * quantity}`),
+        () => cart.map(({ name, quantity, price }) => `${name} x${quantity} - ${formatMoney(price * quantity)}`),
         [cart]
     )
 
