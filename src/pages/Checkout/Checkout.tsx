@@ -27,7 +27,7 @@ const Checkout = () => {
     const { cart, total } = useCart()
     const navigate = useNavigate()
     const purchaseItems = useMemo(
-        () => cart.map(({ name, quantity, price }) => `${name} x${quantity} - ${formatMoney(price * quantity)}`),
+        () => cart.map(({ name, quantity, price }) => `${quantity} x ${name} - ${formatMoney(price * quantity)}`),
         [cart]
     )
 
