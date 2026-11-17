@@ -35,7 +35,7 @@ const Product = ({ product }: ProductProps) => {
             )}
             <p className="text-primary text-xs">{sku}</p>
             <p className="line-clamp-2 h-[48px]">{name}</p>
-            <p>{price}</p>
+            <p translate="no" className="notranslate">{price}</p>
             <p className="text-gray-400 text-xs line-clamp-2 h-[34px] mb-1">{description}</p>
             <div className={`flex justify-center items-center gap-2 ${sku === '' ? 'mt-[1.25rem]' : null}`}>
                 <Button type="button" onClick={() => setQuantity(hash, quantities[hash] - 1)} disabled={!stock}>

@@ -28,7 +28,7 @@ const Header = () => {
                 </NavLink>
                 {buttonPropsByPathname && (
                     <div className="flex items-center gap-2">
-                        <p>{total}</p>
+                        <p translate="no" className="notranslate">{total}</p>
                         <Button onClick={() => navigate(buttonPropsByPathname.to)}>
                             {buttonPropsByPathname.button}
                         </Button>

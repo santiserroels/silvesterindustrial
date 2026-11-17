@@ -22,8 +22,8 @@ const Cart = () => {
                     <div key={product.hash} className="border-[1px] border-primary mb-2 rounded-lg p-2">
                         <p className="truncate">{product.name}</p>
                         <p>X{product.quantity}</p>
-                        <p>{product.price}</p>
-                        <p>{formatMoney(product.subtotal)}</p>
+                        <p translate="no" className="notranslate">{product.price}</p>
+                        <p translate="no" className="notranslate">{formatMoney(product.subtotal)}</p>
                     </div>
                 ))}
             </div>
